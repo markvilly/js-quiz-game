@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini JS QUIZ</title>
+  </head>
+  <style>
+    body {
+      margin: 1rem auto;
+      padding: 3rem;
+      font-family: sans-serif;
+    }
+    header {
+      width: 50%;
+      margin: 1rem auto;
+    }
+    main {
+      min-width: 25rem;
+      max-width: 50%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+    #statement {
+      border: 1px solid black;
+      border-radius: 0.5rem;
+      box-shadow: 5px 5px 5px gray;
+      padding: 1rem;
+      font-size: x-large;
+      text-align: center;
+      margin: 1rem 0px;
+      min-height: 2em;
+    }
+    #explanation {
+      padding: 1rem;
+      text-align: center;
+    }
+    #options {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    button {
+      padding: 0.5rem;
+      font-size: medium;
+      border-radius: 5px;
+    }
+    .correct {
+      background-color: lightgreen;
+    }
+    .incorrect {
+      background-color: lightpink;
+    }
+  </style>
+  <body>
+    <header>
+      <h1>Quiz.js</h1>
+      <p>Do you know JS? Find out!</p>
+    </header>
+
+    <main>
+      <div id="statement"></div>
+      <div id="options">
+        <button name="true" value="true">true</button>
+        <button name="false" value="false">false</button>
+      </div>
+
+      <div id="explanation"></div>
+
+      <div id="next-button">
+        <button class="next-qn" value="Next Question">Next Question</button>
+      </div>
+    </main>
+
+    <script type="text/javascript">
+      // Target statement
+      let statement = document.getElementById("statement");
+      // optionButtons should be all the elements within the "options".
+      const optionButtons = document.querySelector("#options").children;
+      // Explanation should be teh explanation di
+      const explanation = document.getElementById("explanation");
+      const nextQn = document.querySelector(".next-qn");
+      //Declare a variable named fact
+      const fact = {
+        statement: [
+          "Arrays are like objects",
+          "Books are fun to read",
+          "Algo is life?",
+        ],
+        answer: [true, false, true],
+        explanation: "Arrays are a kind of objects with special properties.",
+      };
+
+      statement.textContent = fact.statement[0];
+
+      //TODO4: Declare disable and enable function that set or desable the button.
+
+      function disable(button) {
+        button.setAttribute("disabled", ""); //Putting empty string because disable button doesnt necessarily have a value
+      }
+
+      const enable = (button) => {
+        button.removeAttribute("disabled");
+      };
+
+      //TODO 6A: use loop to add click event on the buttons
+      for (let button of optionButtons) {
+        button.addEventListener("click", (event) => {
+          explanation.textContent = fact.explanation;
+
+          //TODO 6B: using an inner for loop to disable the buttons after clicked.
+          for (let disButton of optionButtons) {
+            disable(disButton);
+          }
+
+          //TODO 7: check if the indexed statement matches the indexed answer
+          let ansGuessed = button.value;
+          if (isCorrect(ansGuessed)) {
+            button.classList.add("correct");
+          } else {
+            button.classList.add("incorrect");
+          }
+        });
+      }
+
+      //LOOP FOR NEXXT
+
+      let statementCurrentIndex = 0;
+
+      nextQn.addEventListener("click", () => {
+        //TODO 8: using a for loop to enable the buttons again.
+        for (let enButton of optionButtons) {
+          enable(enButton);
+          enButton.removeAttribute("class");
+        }
+        //TODO9: using another for loop to cycle throught the statements.
+        statementCurrentIndex++;
+
+        if (statementCurrentIndex >= fact.statement.length) {
+          statementCurrentIndex = 0;
+        }
+
+        statement.textContent = fact.statement[statementCurrentIndex];
+      });
+      function isCorrect(guess) {
+        return guess === fact.answer[statementCurrentIndex].toString();
+      }
+    </script>
+  </body>
+</html>
